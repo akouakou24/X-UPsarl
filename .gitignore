@@ -3,3 +3,5 @@
 __pycache__/
 *.pyc
 db/*.db
+db/*.db-journal
+db/*.sqlite
