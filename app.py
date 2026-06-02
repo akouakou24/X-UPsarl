@@ -91,6 +91,7 @@ BASE = """<!DOCTYPE html><html lang="fr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{title}} — X-UPsarl Cadastre</title>
 <link rel="stylesheet" href="/assets/css/style.css">
+<link rel="stylesheet" href="/assets/css/responsive.css">
 <style>
 :root{--b:#2280C4;--bd:#1A6BA9;--o:#F39200;--br:#7D4E2D;--bg:#F4F4F4;--bo:#D9D9D9;}
 body{font-family:Arial,Helvetica,sans-serif;color:#333;margin:0;background:#fff;}
@@ -669,15 +670,31 @@ def api_counts(znum):
 @app.route("/")
 def home(): return redirect("/index.html")
 
+def inject_layout(html):
+    """Mutualise l'en-tête/pied + responsive : injecte viewport, responsive.css et layout.js."""
+    if "responsive.css" not in html:
+        add = ""
+        if 'name="viewport"' not in html:
+            add += '<meta name="viewport" content="width=device-width, initial-scale=1.0">'
+        add += '<link rel="stylesheet" href="/assets/css/responsive.css">'
+        html = html.replace("</head>", add + "</head>", 1) if "</head>" in html else add + html
+    if "assets/js/layout.js" not in html:
+        tag = '<script src="/assets/js/layout.js"></script>'
+        html = html.replace("</body>", tag + "</body>", 1) if "</body>" in html else html + tag
+    return html
+
 @app.route("/<path:fp>")
 def static_files(fp):
     # ne pas exposer les dossiers sensibles (documents, base) hors authentification
     if fp.split("/")[0] in ("uploads", "db"):
         abort(403)
     full = os.path.join(HERE, fp)
-    if os.path.isfile(full):
-        return send_from_directory(HERE, fp)
-    abort(404)
+    if not os.path.isfile(full):
+        abort(404)
+    if fp.lower().endswith(".html"):
+        with open(full, encoding="utf-8") as fh:
+            return inject_layout(fh.read()), 200, {"Content-Type": "text/html; charset=utf-8"}
+    return send_from_directory(HERE, fp)
 
 if __name__ == "__main__":
     print("X-UPsarl Cadastre — http://127.0.0.1:8000  (Ctrl+C pour arrêter)")

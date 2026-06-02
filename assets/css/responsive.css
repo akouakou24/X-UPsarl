@@ -1,0 +1,78 @@
+/* =========================================================================
+   X-UPsarl — Responsive (smartphone, tablette, ordinateur)
+   Chargé sur toutes les pages. Complète style.css sans le remplacer.
+   ========================================================================= */
+
+*, *::before, *::after { box-sizing: border-box; }
+img, svg, canvas { max-width: 100%; height: auto; }
+
+/* Bouton menu mobile — caché sur grand écran */
+.xup-burger {
+  display: none;
+  background: transparent; border: none; color: #fff;
+  font-size: 26px; line-height: 1; cursor: pointer; padding: 4px 8px;
+}
+
+/* En-tête flexible */
+.xup-header { flex-wrap: wrap; }
+
+/* ---------- TABLETTE ET MOBILE (≤ 900px) ---------- */
+@media (max-width: 900px) {
+  .xup-header { position: relative; }
+  .xup-burger { display: inline-block; order: 2; margin-left: auto; }
+
+  /* La navigation se replie sous l'en-tête et se déploie via le hamburger */
+  .xup-nav {
+    order: 4; flex-basis: 100%; display: none;
+    flex-direction: column; width: 100%; gap: 0; margin-top: 8px;
+  }
+  .xup-nav.open { display: flex; }
+  .xup-nav a {
+    display: block; width: 100%; padding: 12px 10px;
+    border-top: 1px solid rgba(255,255,255,.15);
+  }
+
+  .xup-header-right { order: 3; gap: 6px; }
+  .xup-search { display: none; }
+
+  /* e-Régul : menu + formulaire empilés */
+  .eregul-layout { display: block !important; }
+  .eregul-menu { width: 100% !important; }
+
+  /* Onglets GUBE : passage à la ligne */
+  .gube-tabs { flex-wrap: wrap; }
+
+  /* Statistiques GUBE : grille adaptative */
+  .gube-stats { flex-wrap: wrap; }
+  .gube-stat { flex: 1 1 40%; }
+}
+
+/* ---------- MOBILE (≤ 600px) ---------- */
+@media (max-width: 600px) {
+  .xup-header-right .btn-connexion,
+  .xup-header-right .btn-inscription { padding: 6px 8px; font-size: .72rem; }
+  .village-selector { flex-direction: column; align-items: stretch; }
+  .village-selector select { width: 100%; }
+  h1 { font-size: 1.2rem; }
+}
+
+/* Tableaux : défilement horizontal au lieu de déborder */
+@media (max-width: 760px) {
+  table { display: block; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .recent-grid { overflow-x: auto; }
+}
+
+/* Module cadastre (Flask) : conteneurs adaptatifs */
+@media (max-width: 760px) {
+  .wrap { padding: 14px 12px 50px; }
+  .cad-top { flex-direction: column; align-items: flex-start; gap: 6px; }
+  .row { grid-template-columns: 1fr !important; }      /* formulaires : 1 colonne */
+  .grid { grid-template-columns: repeat(auto-fill, minmax(90px, 1fr)); }
+  canvas#sg { width: 100%; height: auto; }
+}
+
+/* Plan / Cadastre : visualiseur plein écran sur mobile */
+@media (max-width: 900px) {
+  .layout.split { grid-template-columns: 1fr !important; }
+  .viewer { height: 60vh; }
+}
