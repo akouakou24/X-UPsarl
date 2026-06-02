@@ -43,10 +43,13 @@
     <a class="item" href="#" data-svc="etat"    onclick="showService('etat');return false;">ÉTAT FONCIER</a>
     <a class="item" href="#" data-svc="sec"     onclick="showService('sec');return false;">JE SÉCURISE MON BIEN</a>
     <a class="item" href="#" data-svc="mauv"    onclick="showService('mauv');return false;">MAUVAIS LOCATAIRES</a>
-    <a class="item gray" href="#">SIMULATEUR ▾</a>
-    <a class="item orange" href="#" data-svc="valeur"  onclick="showService('valeur');return false;">VALEUR RÉELLE</a>
-    <a class="item orange" href="#" data-svc="rentab"  onclick="showService('rentab');return false;">TAUX DE RENTABILITÉ</a>
-    <a class="item orange" href="#" data-svc="quotite" onclick="showService('quotite');return false;">MA QUOTITÉ CESSIBLE</a>
+    <a class="item gray" href="#" id="sim-toggle" onclick="toggleSim();return false;">SIMULATEUR <span id="sim-arrow">▾</span></a>
+    <div id="sim-sub" style="display:none;">
+      <a class="item orange" href="#" data-svc="valeur"  onclick="showService('valeur');return false;">VALEUR RÉELLE</a>
+      <a class="item orange" href="#" data-svc="rentab"  onclick="showService('rentab');return false;">TAUX DE RENTABILITÉ</a>
+      <a class="item orange" href="#" data-svc="quotite" onclick="showService('quotite');return false;">MA QUOTITÉ CESSIBLE</a>
+      <a class="item orange" href="#" data-svc="impot"   onclick="showService('impot');return false;">IMPÔT FONCIER</a>
+    </div>
   </div>
 
   <div class="eregul-form" id="form-area">
@@ -141,6 +144,7 @@
       <div class="right"><button class="btn btn-primary" onclick="calculRentab()">Calculer</button></div>
       <div id="r-result" style="margin-top:18px;"></div>`,
 
+
     quotite: () => `
       <h3>SIMULATEUR — MA QUOTITÉ CESSIBLE</h3>
       <p class="muted small">
@@ -195,6 +199,24 @@
         Quotité disponible en présence d'enfants : <strong>1/2</strong> (1 enfant), <strong>1/3</strong> (2 enfants), <strong>1/4</strong> (3 enfants et +).
         En l'absence d'enfants, conjoint réservataire à <strong>1/4</strong>. Calcul informatif — un acte notarié reste indispensable.
       </p>`,
+
+    impot: () => `
+      <h3>SIMULATEUR — IMPÔT FONCIER</h3>
+      <p class="muted small">Estimation indicative de l'impôt foncier annuel (Côte d'Ivoire). Le montant officiel dépend de la valeur administrative retenue par l'administration fiscale.</p>
+      <div class="form-row"><label>Type de bien</label>
+        <select id="if-type">
+          <option value="nonbati">Terrain non bâti</option>
+          <option value="habite">Bâti — occupé par le propriétaire</option>
+          <option value="loue">Bâti — donné en location</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Valeur vénale (FCFA)</label><input type="number" id="if-valeur" value="50000000"></div>
+      <div class="form-row"><label>Revenu locatif annuel (FCFA) — si loué</label><input type="number" id="if-loyer" value="0"></div>
+      <div class="right"><button class="btn btn-primary" onclick="calculImpot()">Calculer l'impôt foncier</button></div>
+      <div id="if-result" style="margin-top:18px;"></div>
+      <p class="muted small" style="margin-top:18px;border-top:1px dashed #ccc;padding-top:12px;">
+        Taux indicatifs : <strong>1,5 %</strong> de la valeur vénale (terrain non bâti) · <strong>4 %</strong> de la valeur locative (bâti occupé par le propriétaire) · <strong>15 %</strong> du revenu locatif (bâti loué). Calcul informatif.
+      </p>`,
   };
 
   function showService(s) {
@@ -207,6 +229,33 @@
       (s === 'lit' || s === 'etat' || s === undefined) ? 'block' : 'none';
   }
   window.showService = showService;
+
+  // ====== Menu déroulant SIMULATEUR ======
+  function toggleSim() {
+    var sub = document.getElementById('sim-sub');
+    var open = sub.style.display === 'none';
+    sub.style.display = open ? 'block' : 'none';
+    document.getElementById('sim-arrow').textContent = open ? '▴' : '▾';
+  }
+  window.toggleSim = toggleSim;
+
+  // ====== Calcul impôt foncier ======
+  function calculImpot() {
+    const t     = document.getElementById('if-type').value;
+    const v     = +document.getElementById('if-valeur').value || 0;
+    const loyer = +document.getElementById('if-loyer').value || 0;
+    let taux, impot, detail;
+    if (t === 'nonbati')      { taux = 1.5; impot = v * 0.015; detail = '1,5 % de la valeur vénale (terrain non bâti).'; }
+    else if (t === 'habite')  { taux = 4;   impot = (v * 0.5) * 0.04; detail = '4 % de la valeur locative (estimée à 50 % de la valeur vénale).'; }
+    else                      { taux = 15;  impot = loyer * 0.15; detail = '15 % du revenu locatif annuel brut (bien loué).'; }
+    const fmt = x => new Intl.NumberFormat('fr-FR').format(Math.round(x)) + ' FCFA';
+    document.getElementById('if-result').innerHTML = `
+      <div style="padding:16px;background:#fff;border:1px solid #ddd;border-left:4px solid var(--xup-blue);">
+        <p style="margin:0 0 6px;font-weight:700;color:var(--xup-blue);font-size:18px;">Impôt foncier estimé : ${fmt(impot)} / an</p>
+        <p class="small muted" style="margin:0;">Taux appliqué : ${taux} % — ${detail}</p>
+      </div>`;
+  }
+  window.calculImpot = calculImpot;
 
   // ====== Calcul rentabilité ======
   function calculRentab() {

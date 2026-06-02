@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS compte (
 -- 2. Colonnes de workflow ajoutées à la table LOT (créée en migration 001)
 --    etat : brouillon -> soumis -> verifie -> valide   (ou 'rejete')
 -- -------------------------------------------------------------------------
+ALTER TABLE lot ADD COLUMN souhait           TEXT;                 -- bail à construction, emphytéotique, partenariat, en vente, litige, cession
 ALTER TABLE lot ADD COLUMN numero_ocr        TEXT;                 -- proposé par OCR
 ALTER TABLE lot ADD COLUMN numero_source     TEXT DEFAULT 'manuel';-- 'ocr' | 'manuel'
 ALTER TABLE lot ADD COLUMN etat_validation   TEXT DEFAULT 'brouillon';

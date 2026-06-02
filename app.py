@@ -16,14 +16,33 @@ import os, sqlite3, json
 from functools import wraps
 from datetime import datetime
 from flask import (Flask, request, session, redirect, url_for,
-                   render_template_string, send_from_directory, abort, jsonify)
+                   render_template_string, send_from_directory, send_file, abort, jsonify)
 from werkzeug.security import check_password_hash
+from werkzeug.utils import secure_filename
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 DB   = os.path.join(HERE, "db", "xup.db")
+UPLOAD_DIR = os.path.join(HERE, "uploads", "lots")
 
 app = Flask(__name__, static_folder=None)
 app.secret_key = "xup-cadastre-secret-key-change-me"
+app.config["MAX_CONTENT_LENGTH"] = 3 * 1024 * 1024 * 1024   # 3 Go par envoi
+
+# Types de documents terrain proposés (liste déroulante)
+DOC_TYPES = [
+    "Titre Foncier (TF)", "ACD — Arrêté de Concession Définitive",
+    "Attestation villageoise", "Lettre d'attribution", "Certificat de propriété",
+    "Plan de lotissement / cadastral", "Procès-verbal de bornage",
+    "Acte de cession / vente", "Acte notarié", "Pièce d'identité du propriétaire",
+    "Photo du terrain", "Quittance / reçu de paiement", "Autre document",
+]
+
+def human_size(n):
+    n = float(n or 0)
+    for u in ("o", "Ko", "Mo", "Go"):
+        if n < 1024 or u == "Go":
+            return (f"{int(n)} {u}" if u == "o" else f"{n:.1f} {u}")
+        n /= 1024
 
 # --------------------------------------------------------------------------- DB
 def db():
@@ -245,6 +264,7 @@ def lot_detail(lot_id):
         WHERE l.id=?""",(lot_id,)).fetchone()
     if not l: con.close(); abort(404)
     ad = con.execute("SELECT * FROM lot_ayant_droit WHERE lot_id=? ORDER BY id",(lot_id,)).fetchall()
+    docs = con.execute("SELECT * FROM lot_document WHERE lot_id=? ORDER BY id DESC",(lot_id,)).fetchall()
     muts = con.execute("SELECT * FROM lot_mutation WHERE lot_id=? ORDER BY id DESC",(lot_id,)).fetchall()
     hist = con.execute("""SELECT * FROM lot_historique WHERE lot_id=? OR mutation_id IN
         (SELECT id FROM lot_mutation WHERE lot_id=?) ORDER BY id DESC""",(lot_id,lot_id)).fetchall()
@@ -255,11 +275,24 @@ def lot_detail(lot_id):
     can_check = role=="superviseur" and e=="soumis"
     can_dg    = role=="dg" and e=="verifie"
 
+    def doc_li(d, can_del):
+        delx = (f" &nbsp;<a href='/cadastre/document/{d['id']}/suppr' "
+                f"onclick=\"return confirm('Supprimer ce document ?')\" style='color:#b91c1c'>✕</a>") if can_del else ""
+        return (f"<li>[{d['type_document']}] <a href='/cadastre/document/{d['id']}'>{d['nom_fichier']}</a> "
+                f"<span class='muted'>({human_size(d['taille'])})</span>{delx}</li>")
+    doc_rows_edit = "".join(doc_li(d, True) for d in docs)
+    doc_rows_ro   = "".join(doc_li(d, False) for d in docs)
+    docs_ro_card = ("" if can_edit else
+        f"<div class='card'><h2>Documents du terrain</h2><ul>"
+        f"{doc_rows_ro or '<li class=muted>Aucun document</li>'}</ul></div>")
+
     # --- bloc édition (agent) ---
     edit = ""
     if can_edit:
-        edit = f"""<form class="card" method="post" action="/cadastre/lot/{lot_id}/save">
+        edit = f"""<form class="card" method="post" enctype="multipart/form-data" action="/cadastre/lot/{lot_id}/save">
           <h2>Saisie / correction (Agent)</h2>
+          <label>Souhait</label>
+          <select name="souhait">{_opts(['','Bail à construction','Bail emphytéotique','Partenariat','En vente','Litige','Cession'], l['souhait'])}</select>
           <div class="row">
             <div><label>N° de lot {'<span class=muted>(proposé OCR : '+l['numero_ocr']+')</span>' if l['numero_ocr'] else ''}</label>
               <input name="numero" value="{l['numero'] or ''}"></div>
@@ -278,6 +311,15 @@ def lot_detail(lot_id):
               <select name="statut">{_opts(['Non renseigné','Titre Foncier','ACD','Attestation villageoise',"Lettre d'attribution",'En cours','Litige','Libre'], l['statut_foncier'])}</select></div>
             <div><label>Occupation</label>
               <select name="occupation">{_opts(['Non renseigné','Bâti','Non bâti','Réservé','Espace public'], l['occupation'])}</select></div>
+          </div>
+          <label>Documents du terrain</label>
+          <div class="card" style="background:#fafdff;margin:4px 0 0">
+            <ul style="margin:0 0 10px">{doc_rows_edit or '<li class=muted>Aucun document chargé</li>'}</ul>
+            <label>Type de document</label>
+            <select name="doc_type">{_opts(DOC_TYPES)}</select>
+            <label>Ajouter un ou plusieurs fichiers (3 Go max par envoi, plusieurs possibles)</label>
+            <input type="file" name="docs" multiple>
+            <p class="muted" style="margin:6px 0 0">Les fichiers sont stockés sur le serveur ; seules leurs références figurent en base de données.</p>
           </div>
           <div style="margin-top:14px">
             <button class="btn" name="action" value="save">Enregistrer (brouillon)</button>
@@ -373,7 +415,8 @@ def lot_detail(lot_id):
       <h2>Lot {l['numero']} — Îlot {l['inum']} (Zone {l['znum']})</h2>
       {flow(e)} {etat_badge(e)}
       {('<div class=alert>Motif de rejet : '+l['motif_rejet']+'</div>') if e=='rejete' and l['motif_rejet'] else ''}
-      <p><b>Propriétaire :</b> {(l['proprietaire_nom'] or '—')} {l['proprietaire_prenoms'] or ''}
+      <p><b>Souhait :</b> {l['souhait'] or '—'}
+       &nbsp;·&nbsp; <b>Propriétaire :</b> {(l['proprietaire_nom'] or '—')} {l['proprietaire_prenoms'] or ''}
        &nbsp;·&nbsp; <b>Superficie :</b> {(str(l['superficie'])+' m²') if l['superficie'] else '—'}
        &nbsp;·&nbsp; <b>Statut :</b> {l['statut_foncier'] or '—'}</p>
     </div>"""
@@ -381,7 +424,7 @@ def lot_detail(lot_id):
     body = (f"""<div class="crumb"><a href="/gube-plan.html">Plan</a> ›
       <a href="/cadastre/zone/{l['znum']}">Zone {l['znum']}</a> ›
       <a href="/cadastre/ilot/{l['iid']}">Îlot {l['inum']}</a> › Lot {l['numero']}</div>
-      <h1>Fiche du lot</h1>""" + info + sig_view + edit + act + mut_form + mut_table + adblock + histblock)
+      <h1>Fiche du lot</h1>""" + info + sig_view + docs_ro_card + edit + act + mut_form + mut_table + adblock + histblock)
     return page(f"Lot {l['numero']}", body)
 
 def _opts(values, current=None):
@@ -414,7 +457,7 @@ function sig(){var btn=event.submitter;if(btn&&btn.value==='rejet')return true;
 def lot_save(lot_id):
     con = db()
     l = con.execute("SELECT * FROM lot WHERE id=?",(lot_id,)).fetchone()
-    fields = {"numero":"numero","superficie":"superficie","proprietaire_nom":"pnom",
+    fields = {"souhait":"souhait","numero":"numero","superficie":"superficie","proprietaire_nom":"pnom",
               "proprietaire_prenoms":"pprenoms","proprietaire_contact":"pcontact",
               "grande_famille":"famille","statut_foncier":"statut","occupation":"occupation"}
     for col, fld in fields.items():
@@ -424,6 +467,27 @@ def lot_save(lot_id):
             con.execute(f"UPDATE lot SET {col}=? WHERE id=?",(new or None,lot_id))
             log(con, lot_id=lot_id, action="modification", champ=col, old=old, new=new)
     con.execute("UPDATE lot SET modifie_le=CURRENT_TIMESTAMP WHERE id=?",(lot_id,))
+    # --- documents terrain : stockés sur disque, métadonnées en base ---
+    files = request.files.getlist("docs")
+    dtype = request.form.get("doc_type", "Autre document")
+    if files:
+        ddir = os.path.join(UPLOAD_DIR, str(lot_id))
+        os.makedirs(ddir, exist_ok=True)
+        for f in files:
+            if not f or not f.filename:
+                continue
+            fn = secure_filename(f.filename) or "document"
+            base, ext = os.path.splitext(fn); k = 1; dest = os.path.join(ddir, fn)
+            while os.path.exists(dest):
+                fn = f"{base}_{k}{ext}"; dest = os.path.join(ddir, fn); k += 1
+            f.save(dest)
+            con.execute("""INSERT INTO lot_document
+                (lot_id,type_document,nom_fichier,chemin,taille,mime,uploaded_by,uploaded_nom)
+                VALUES(?,?,?,?,?,?,?,?)""",
+                (lot_id, dtype, fn, dest, os.path.getsize(dest), f.mimetype,
+                 session["user"]["id"], session["user"]["nom"]))
+            log(con, lot_id=lot_id, action="document_ajout", new=fn,
+                details=f"Document «{dtype}» ajouté")
     action = request.form.get("action")
     if action=="submit":
         con.execute("""UPDATE lot SET etat_validation='soumis', maker_id=?, date_soumission=CURRENT_TIMESTAMP,
@@ -556,6 +620,28 @@ def historique():
         f"<h1>Historique global (accès DG)</h1><table class='hist'>"
         f"<tr><th>Date</th><th>Lot</th><th>Acteur</th><th>Action</th><th>Détail</th></tr>{rows}</table>")
 
+# ----- documents : téléchargement / suppression
+@app.route("/cadastre/document/<int:doc_id>")
+@login_required
+def document_dl(doc_id):
+    con = db(); d = con.execute("SELECT * FROM lot_document WHERE id=?",(doc_id,)).fetchone(); con.close()
+    if not d or not os.path.exists(d["chemin"]): abort(404)
+    return send_file(d["chemin"], as_attachment=True, download_name=d["nom_fichier"])
+
+@app.route("/cadastre/document/<int:doc_id>/suppr")
+@role_required("agent")
+def document_suppr(doc_id):
+    con = db(); d = con.execute("SELECT * FROM lot_document WHERE id=?",(doc_id,)).fetchone()
+    lid = d["lot_id"] if d else 0
+    if d:
+        try: os.remove(d["chemin"])
+        except OSError: pass
+        con.execute("DELETE FROM lot_document WHERE id=?",(doc_id,))
+        log(con, lot_id=lid, action="document_suppr", old=d["nom_fichier"])
+        con.commit()
+    con.close()
+    return redirect(url_for("lot_detail", lot_id=lid))
+
 # ----- résolveur îlot (depuis la page plan) : zone+numéro -> fiche îlot
 @app.route("/cadastre/go")
 @login_required
@@ -585,6 +671,9 @@ def home(): return redirect("/index.html")
 
 @app.route("/<path:fp>")
 def static_files(fp):
+    # ne pas exposer les dossiers sensibles (documents, base) hors authentification
+    if fp.split("/")[0] in ("uploads", "db"):
+        abort(403)
     full = os.path.join(HERE, fp)
     if os.path.isfile(full):
         return send_from_directory(HERE, fp)
