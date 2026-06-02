@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — Nouveau Locataire</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html">e-Régul</a>
+    <a href="gube.html" class="active">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search"><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+
+<div class="gube-tabs" style="margin-top:30px">
+  <a class="tab" href="gube-contrats.html">Contrats</a>
+  <span class="tab-sep">|</span>
+  <a class="tab">Bilans</a>
+  <span class="tab-sep">|</span>
+  <a class="tab active">Patrimoine</a>
+</div>
+
+<div class="gube-subtabs">
+  <a class="subtab" href="gube-nouveau-patrimoine.html">Nouveau Patrimoine</a>
+  <span class="sep">|</span>
+  <a class="subtab active">Gestion Locative</a>
+</div>
+
+<div class="village-selector">
+  <label>Sélectionner le Village</label>
+  <select name="village">
+    <option value="V001">ANONO</option>
+    <option value="V002">AKOUAI-SANTAI</option>
+    <option value="V003">ANONKOUAKOUTÉ</option>
+  </select>
+</div>
+
+<div class="form-section">
+
+  <!-- ENTETE PATRIMOINE -->
+  <div class="form-block">
+    <div class="form-row">
+      <h4 style="margin:0;">SAISIE DE DONNÉES</h4>
+      <span class="lbl" style="margin-left:auto;">INFORMATIONS OCCUPANTS</span>
+      <span class="lbl" style="margin-left:auto;">Identifiant</span>
+      <span class="identifiant-display">V001-GUBE-AO091A</span>
+    </div>
+    <div class="form-row">
+      <span class="lbl">Zone</span><input class="input-small" value="Zone A" readonly>
+      <span class="lbl">Lot N°</span><input class="input-small" value="91" readonly>
+      <span class="lbl">Ilôt N°</span><input class="input-small" value="12" readonly>
+      <span class="lbl">Superficie</span><input class="input-small" value="600" readonly>
+      <span class="lbl">Titre de Propriété</span><input class="input-small" value="TF-12345" readonly>
+    </div>
+    <div class="form-row">
+      <span class="lbl">Propriétaire Terrien / Bailleur</span>
+      <input class="input-large" value="KOUASSI Bernard" readonly>
+      <span class="lbl">Contact</span>
+      <input class="input-medium" value="+225 07 08 12 34 56" readonly>
+    </div>
+  </div>
+
+  <!-- LOCATAIRE 1 -->
+  <div class="form-block">
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Nom</span><input class="input-medium" value="KOFFI">
+      <span class="lbl">Prénoms</span><input class="input-medium" value="Stéphane">
+      <span class="lbl">N° CNI</span><input class="input-medium" value="C1010101010">
+    </div>
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Date de Naissance</span>
+      <input class="input-small" value="22"><input class="input-small" value="04"><input class="input-small" value="1991">
+      <span class="lbl">Lieu de naissance</span><input class="input-large" value="Abidjan">
+    </div>
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Tél.</span><input class="input-medium" value="+225 27 22 33 44 55">
+      <span class="lbl">Mobile</span><input class="input-medium" value="+225 07 11 22 33 44">
+      <span class="lbl">Appt.</span>
+      <select class="input-medium">
+        <option selected>Studio</option><option>2 Pièces</option><option>3 Pièces</option><option>4 Pièces</option>
+      </select>
+      <span class="lbl">Loyer</span><input class="input-medium" value="75 000 FCFA">
+    </div>
+  </div>
+
+  <!-- LOCATAIRE 2 -->
+  <div class="form-block">
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Nom</span><input class="input-medium" value="SORO">
+      <span class="lbl">Prénoms</span><input class="input-medium" value="Ibrahim">
+      <span class="lbl">N° CNI</span><input class="input-medium" value="C1030303030">
+    </div>
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Date de Naissance</span>
+      <input class="input-small" value="08"><input class="input-small" value="11"><input class="input-small" value="1985">
+      <span class="lbl">Lieu de naissance</span><input class="input-large" value="Korhogo">
+    </div>
+    <div class="form-row">
+      <span class="lbl" style="width:80px;">Tél.</span><input class="input-medium" value="+225 27 22 33 66 77">
+      <span class="lbl">Mobile</span><input class="input-medium" value="+225 01 33 44 55 66">
+      <span class="lbl">Appt.</span>
+      <select class="input-medium">
+        <option>Studio</option><option selected>2 Pièces</option><option>3 Pièces</option><option>4 Pièces</option>
+      </select>
+      <span class="lbl">Loyer</span><input class="input-medium" value="125 000 FCFA">
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <button class="btn btn-brown btn-large">Enregistrer</button>
+  </div>
+
+  <a class="gube-add-btn" href="#">Ajouter Nouveau Locataire +</a>
+</div>
+
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script><script src="assets/js/app.js"></script>
+</body></html>

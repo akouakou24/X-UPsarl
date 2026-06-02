@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 200" font-family="Arial Black, Arial, sans-serif">
+  <!-- Petit drapeau orange en haut à droite du X -->
+  <polygon points="138,18 168,8 152,52 138,42" fill="#F39200"/>
+
+  <!-- Le X bleu, deux barres croisées -->
+  <polygon points="6,18 60,18 152,130 152,160 96,160 6,52" fill="#1F75B5"/>
+  <polygon points="6,160 60,160 152,52 152,18 96,18" fill="#1F75B5"/>
+
+  <!-- Trait de séparation horizontal -->
+  <line x1="6" y1="172" x2="354" y2="172" stroke="#222" stroke-width="1.5"/>
+
+  <!-- UP en gris clair -->
+  <text x="158" y="148" font-size="92" font-weight="900" fill="#B5B5B5" letter-spacing="-2">UP</text>
+
+  <!-- sarl en petit -->
+  <text x="296" y="148" font-size="34" font-weight="700" fill="#B5B5B5">sarl</text>
+
+  <!-- Tagline cursive "Bâtir le futur..." -->
+  <text x="180" y="195" font-family="'Brush Script MT', 'Lucida Handwriting', cursive" font-style="italic" font-size="22" fill="#222">Bâtir le futur...</text>
+</svg>

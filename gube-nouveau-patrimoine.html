@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — Le GUBE — Nouveau Patrimoine</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html">e-Régul</a>
+    <a href="gube.html" class="active">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search"><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+
+<!-- ONGLETS PILLS : Contrats / Bilans / Patrimoine -->
+<div class="gube-tabs">
+  <a class="tab" href="gube-contrats.html">Contrats</a>
+  <span class="tab-sep">|</span>
+  <a class="tab">Bilans</a>
+  <span class="tab-sep">|</span>
+  <a class="tab active">Patrimoine</a>
+</div>
+
+<!-- SOUS-ONGLETS : Nouveau Patrimoine / Gestion Locative -->
+<div class="gube-subtabs">
+  <a class="subtab active">Nouveau Patrimoine</a>
+  <span class="sep">|</span>
+  <a class="subtab" href="gube-patrimoine.html">Gestion Locative</a>
+</div>
+
+<!-- SÉLECTION VILLAGE -->
+<div class="gube-village-bar">
+  <div class="inner">
+    <label>Sélectionner le Village</label>
+    <select name="village">
+      <option value=""></option>
+      <option value="V001">ANONO</option>
+      <option value="V002">AKOUAI-SANTAI</option>
+      <option value="V003">ANONKOUAKOUTÉ</option>
+    </select>
+  </div>
+</div>
+
+<!-- BLOC SAISIE DE DONNÉES -->
+<div class="gube-saisie-wrap" style="margin-top:14px;">
+  <div class="gube-saisie-block">
+    <div class="head-row">
+      <span class="head-title">SAISIE DE DONNÉES</span>
+      <label>Statut</label>
+      <select>
+        <option>Terrain nu</option>
+        <option>Maisons Basses</option>
+        <option>Maisons à Etages</option>
+        <option>Mixte</option>
+      </select>
+      <label>Identifiant</label>
+      <input type="text">
+    </div>
+    <div class="loc-row">
+      <div class="field"><label>Zone</label><input placeholder="XXXXX"></div>
+      <div class="field"><label>Lot N°</label><input placeholder="XXXXX"></div>
+      <div class="field"><label>Ilôt N°</label><input placeholder="XXXXX"></div>
+      <div class="field"><label>Superficie</label><input placeholder="XXXXX"></div>
+      <div class="field"><label>Titre de Propirété</label><input placeholder="XXXXX"></div>
+    </div>
+  </div>
+
+  <!-- BLOC IDENTITÉ + AYANTS-DROITS -->
+  <div class="gube-form-body">
+    <div class="gube-form-2col">
+      <!-- COLONNE GAUCHE : identité propriétaire -->
+      <div class="col-left">
+        <div class="row">
+          <label>Grande Famille :</label>
+          <input placeholder="xxxxxxxxxxx">
+        </div>
+        <div class="row">
+          <label>Nom</label>
+          <input placeholder="xxxxxxxxxxxxxxx">
+        </div>
+        <div class="row">
+          <label>Prénoms</label>
+          <input placeholder="xxxxxxxxxxxxxxx">
+        </div>
+        <div class="row">
+          <label>Date de Naissance</label>
+          <div class="date-3">
+            <input placeholder="DD">
+            <span class="sep">|</span>
+            <input placeholder="MM">
+            <span class="sep">|</span>
+            <input placeholder="YYYY">
+          </div>
+        </div>
+        <div class="row">
+          <label>Lieu de naissance</label>
+          <input placeholder="xxxxxxxxxxxxxxx">
+        </div>
+        <div class="row">
+          <label>N° Pièce d'Identité</label>
+          <input placeholder="xxxxxxxxxxxxxxx">
+        </div>
+        <div class="row">
+          <label>Tél.</label>
+          <div class="tel-pair">
+            <input placeholder="xxxxxxxxxxx">
+            <label>Mobile</label>
+            <input placeholder="xxxxxxxxxxx">
+          </div>
+        </div>
+      </div>
+
+      <!-- COLONNE DROITE : Ayants-droits propriétaire -->
+      <div class="col-right">
+        <h4>AYANT-DROITS PROPRIÉTAIRE</h4>
+        <div class="sub">Nom et Prénoms / Date de naissance</div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+        <div class="ad-row"><input placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOC DOTATION / LOYER NUMÉRAIRE / NATURE -->
+  <div class="gube-dotation">
+    <div class="field"><label>Dotation</label><input placeholder="xxxxxxxxxxxxxxx"></div>
+    <div class="field"><label>Loyer Numéraire</label><input placeholder="xxxxxxxxxxxxxxx"></div>
+    <div class="field"><label>Nature</label><input placeholder="xxxxxxxxxxxxxxx"></div>
+  </div>
+
+  <!-- FOOTER : SOUHAIT + ENREGISTRER -->
+  <div class="gube-footer-action">
+    <label>Souhait</label>
+    <select>
+      <option selected>Maisons Basses</option>
+      <option>Maisons à Etages</option>
+      <option>Mixte</option>
+    </select>
+    <button class="btn-enregistrer">Enregistrer</button>
+  </div>
+</div>
+
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script><script src="assets/js/app.js"></script>
+</body></html>

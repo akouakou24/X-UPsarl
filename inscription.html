@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — Inscription</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<meta name="description" content="Créez votre compte X-UPsarl en moins de 5 minutes. Choisissez votre profil : investisseur particulier ou propriétaire-bailleur villageois.">
+<meta name="keywords" content="immobilier, bail emphytéotique, Côte d'Ivoire, Abidjan, investissement participatif, X-UPsarl, crowdfunding immobilier">
+<meta name="author" content="X-UPsarl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="X-UPsarl — Inscription Investisseur ou Propriétaire-Bailleur">
+<meta property="og:description" content="Créez votre compte X-UPsarl en moins de 5 minutes. Choisissez votre profil : investisseur particulier ou propriétaire-bailleur villageois.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
+<meta property="og:locale" content="fr_CI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="X-UPsarl — Inscription Investisseur ou Propriétaire-Bailleur">
+<meta name="twitter:description" content="Créez votre compte X-UPsarl en moins de 5 minutes. Choisissez votre profil : investisseur particulier ou propriétaire-bailleur villageois.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">
+</head>
+<body>
+
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html">e-Régul</a>
+    <a href="gube.html">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search"><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+
+<section class="inscription-wrap">
+
+  <!-- Entête : titre + 2 onglets sur une seule ligne -->
+  <div class="inscription-header">
+    <div class="title">INSCRIPTION</div>
+    <button class="inscription-tab investisseur" onclick="switchTab('inv', this)">INVESTISSEUR</button>
+    <button class="inscription-tab bailleur"     onclick="switchTab('bai', this)">PROPRIETAIRE/BAILLEUR</button>
+  </div>
+
+  <!-- Deux boîtes encadrées orange -->
+  <div class="inscription-grid">
+
+    <!-- COLONNE GAUCHE : identité -->
+    <div class="inscription-box">
+      <div class="row-civilite">
+        <label>Civilité</label>
+        <select class="dropdown">
+          <option></option><option>M.</option><option>Mme</option><option>Mlle</option>
+        </select>
+        <label>Identifiant</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Nom :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Prénoms :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Date de naissance :</label>
+        <div class="date-fields">
+          <select class="dropdown"><option></option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+            <option>05</option><option>06</option><option>07</option><option>08</option>
+            <option>09</option><option>10</option><option>15</option><option>20</option>
+            <option>25</option><option>28</option><option>30</option><option>31</option>
+          </select>
+          <select class="dropdown"><option></option>
+            <option>01</option><option>02</option><option>03</option><option>04</option>
+            <option>05</option><option>06</option><option>07</option><option>08</option>
+            <option>09</option><option>10</option><option>11</option><option>12</option>
+          </select>
+          <select class="dropdown"><option></option>
+            <option>1970</option><option>1975</option><option>1980</option><option>1985</option>
+            <option>1990</option><option>1995</option><option>2000</option><option>2005</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="inscription-row">
+        <label>Lieu de naissance :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Nature Pièce d'Identité :</label>
+        <select class="dropdown">
+          <option></option><option>CNI</option><option>Passeport</option>
+          <option>Attestation</option><option>Carte consulaire</option>
+        </select>
+      </div>
+
+      <div class="inscription-row">
+        <label>Numéro de la Pièce :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Nationalité :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Adresse Postale :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Pays de Résidence :</label>
+        <select class="dropdown">
+          <option></option>
+          <option>Côte d'Ivoire</option><option>Sénégal</option>
+          <option>Mali</option><option>Burkina Faso</option>
+          <option>Guinée</option><option>Bénin</option><option>Togo</option>
+          <option>France</option><option>Belgique</option><option>Autres</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- COLONNE DROITE : contact + profil investisseur -->
+    <div class="inscription-box">
+      <div class="inscription-row">
+        <label>Ville :</label>
+        <select class="dropdown">
+          <option></option>
+          <option>Abidjan</option><option>Bouaké</option><option>Yamoussoukro</option>
+          <option>San-Pédro</option><option>Daloa</option><option>Korhogo</option>
+          <option>Man</option><option>Gagnoa</option>
+        </select>
+      </div>
+
+      <div class="inscription-row">
+        <label>Commune :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Quartier :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Téléphone :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Courriel :</label>
+        <input type="email">
+      </div>
+
+      <div class="inscription-row">
+        <label>Employeur :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Fonction :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Fréquence d'apport :</label>
+        <input type="text">
+      </div>
+
+      <div class="inscription-row">
+        <label>Montant en apport :</label>
+        <select class="dropdown">
+          <option></option>
+          <option>50 000</option><option>100 000</option><option>250 000</option>
+          <option>500 000</option><option>1 000 000</option><option>2 500 000</option>
+          <option>5 000 000</option><option>10 000 000</option><option>+10 000 000</option>
+        </select>
+      </div>
+
+      <div class="en-xof">EN XOF</div>
+    </div>
+  </div>
+
+  <!-- CAPTCHA -->
+  <div class="inscription-captcha">
+    <div class="captcha-img" aria-label="captcha">
+      <span>1</span><span>2</span><span>L</span><span>H</span><span>K</span><span>O</span>
+    </div>
+    <input class="captcha-input" type="text" placeholder="">
+    <button class="btn-valider">VALIDER</button>
+  </div>
+
+</section>
+
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+
+<script>
+function switchTab(t, el) {
+  document.querySelectorAll('.inscription-tab').forEach(x => x.classList.add('inactive'));
+  el.classList.remove('inactive');
+}
+</script>
+<script src="assets/js/data.js"></script><script src="assets/js/app.js"></script>
+</body></html>

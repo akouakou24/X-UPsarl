@@ -1,0 +1,115 @@
+# =========================================================================
+# X-UPsarl — Configuration Netlify
+# Documentation : https://docs.netlify.com/configure-builds/file-based-configuration/
+# =========================================================================
+
+[build]
+  publish = "."
+
+# -------------------------------------------------------------------------
+# URLS PROPRES — /gube-contrats au lieu de /gube-contrats.html
+# -------------------------------------------------------------------------
+[[redirects]]
+  from = "/gube-contrats"
+  to = "/gube-contrats.html"
+  status = 200
+
+[[redirects]]
+  from = "/gube-nouveau-contrat"
+  to = "/gube-nouveau-contrat.html"
+  status = 200
+
+[[redirects]]
+  from = "/gube-patrimoine"
+  to = "/gube-patrimoine.html"
+  status = 200
+
+[[redirects]]
+  from = "/gube-nouveau-patrimoine"
+  to = "/gube-nouveau-patrimoine.html"
+  status = 200
+
+[[redirects]]
+  from = "/gube-nouveau-locataire"
+  to = "/gube-nouveau-locataire.html"
+  status = 200
+
+[[redirects]]
+  from = "/gube"
+  to = "/gube.html"
+  status = 200
+
+[[redirects]]
+  from = "/concept"
+  to = "/concept.html"
+  status = 200
+
+[[redirects]]
+  from = "/investir"
+  to = "/investir.html"
+  status = 200
+
+[[redirects]]
+  from = "/investir-detail"
+  to = "/investir-detail.html"
+  status = 200
+
+[[redirects]]
+  from = "/e-regul"
+  to = "/e-regul.html"
+  status = 200
+
+[[redirects]]
+  from = "/inscription"
+  to = "/inscription.html"
+  status = 200
+
+[[redirects]]
+  from = "/connexion"
+  to = "/connexion.html"
+  status = 200
+
+[[redirects]]
+  from = "/contacts"
+  to = "/contacts.html"
+  status = 200
+
+# Page 404 personnalisée (capture toutes les URLs inconnues)
+[[redirects]]
+  from = "/*"
+  to = "/404.html"
+  status = 404
+
+# -------------------------------------------------------------------------
+# EN-TÊTES DE SÉCURITÉ (conformes CDC § 15.1)
+# -------------------------------------------------------------------------
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options          = "SAMEORIGIN"
+    X-Content-Type-Options   = "nosniff"
+    Referrer-Policy          = "strict-origin-when-cross-origin"
+    Permissions-Policy       = "geolocation=(), microphone=(), camera=()"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains"
+
+# Cache long sur les assets statiques
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+
+# Pas de cache sur les pages HTML (pour permettre les mises à jour)
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"

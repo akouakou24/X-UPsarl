@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — Le GUBE — Patrimoine / Gestion Locative</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html">e-Régul</a>
+    <a href="gube.html" class="active">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search"><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+
+<div class="gube-tabs" style="margin-top:30px">
+  <a class="tab" href="gube-contrats.html">Contrats</a>
+  <span class="tab-sep">|</span>
+  <a class="tab">Bilans</a>
+  <span class="tab-sep">|</span>
+  <a class="tab active">Patrimoine</a>
+</div>
+
+<div class="gube-subtabs">
+  <a class="subtab" href="gube-nouveau-patrimoine.html">Nouveau Patrimoine</a>
+  <span class="sep">|</span>
+  <a class="subtab active">Gestion Locative</a>
+</div>
+
+<div class="gube-table-wrap">
+  <div class="gube-search-box">
+    ⌕ <input type="search" placeholder="Nom et/ou Prénoms du Bailleur ou Identifiant">
+  </div>
+
+  <table class="gube-table">
+    <thead><tr>
+      <th style="width:40px;">N°</th><th style="width:80px;">Actions</th>
+      <th>Nom et Prénoms</th><th>Appt.</th>
+      <th>Lot / Ilôt</th><th>Loyer mensuel</th>
+      <th>N° de reçu</th><th>Date de Saisie</th>
+      <th>Opérateur de Saisie</th>
+    </tr></thead>
+    <tbody id="loc-body"></tbody>
+  </table>
+
+  <div class="gube-pagination">
+    <span class="page active">1</span> |
+    <span class="page">2</span> |
+    <span class="page">3</span> |
+    <span class="page">4</span> |
+    <span class="page">5</span>
+  </div>
+
+  <a class="gube-add-btn" href="gube-nouveau-locataire.html">Ajouter Nouveau Locataire +</a>
+</div>
+
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+  const body = document.getElementById('loc-body');
+  const all = XUP_DATA.locataires;
+  // 20 lignes : cycle si moins de données
+  for (let i=0; i<20; i++) {
+    const l = all[i % all.length];
+    body.insertAdjacentHTML('beforeend', `
+      <tr>
+        <td>${i+1}.</td>
+        <td><div class="actions"><span class="btn-act red"></span><span class="btn-act blue"></span></div></td>
+        <td>${l.nom}</td>
+        <td>${l.appt}</td>
+        <td>${l.lot}</td>
+        <td>${XUP_fmtXOF(l.loyer)}</td>
+        <td>${l.recu}</td>
+        <td>${l.date}</td>
+        <td>${l.operateur}</td>
+      </tr>`);
+  }
+</script>
+<script src="assets/js/app.js"></script>
+</body></html>

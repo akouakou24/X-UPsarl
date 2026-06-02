@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — e-Régul</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<meta name="description" content="Vérifiez l'état foncier d'un terrain, signalez un site litigieux et utilisez nos simulateurs : valeur réelle, taux de rentabilité, quotité cessible.">
+<meta name="keywords" content="immobilier, bail emphytéotique, Côte d'Ivoire, Abidjan, investissement participatif, X-UPsarl, crowdfunding immobilier">
+<meta name="author" content="X-UPsarl">
+<meta property="og:type" content="website">
+<meta property="og:title" content="X-UPsarl — e-Régul | Régulation foncière et simulateurs">
+<meta property="og:description" content="Vérifiez l'état foncier d'un terrain, signalez un site litigieux et utilisez nos simulateurs : valeur réelle, taux de rentabilité, quotité cessible.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
+<meta property="og:locale" content="fr_CI">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="X-UPsarl — e-Régul | Régulation foncière et simulateurs">
+<meta name="twitter:description" content="Vérifiez l'état foncier d'un terrain, signalez un site litigieux et utilisez nos simulateurs : valeur réelle, taux de rentabilité, quotité cessible.">
+<meta name="twitter:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">
+</head>
+<body>
+
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html" class="active">e-Régul</a>
+    <a href="gube.html">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search" placeholder=""><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+
+<section class="eregul-layout">
+  <div class="eregul-menu">
+    <a class="item" href="#" data-svc="lit"     onclick="showService('lit');return false;">SITES LITIGIEUX</a>
+    <a class="item" href="#" data-svc="etat"    onclick="showService('etat');return false;">ÉTAT FONCIER</a>
+    <a class="item" href="#" data-svc="sec"     onclick="showService('sec');return false;">JE SÉCURISE MON BIEN</a>
+    <a class="item" href="#" data-svc="mauv"    onclick="showService('mauv');return false;">MAUVAIS LOCATAIRES</a>
+    <a class="item gray" href="#">SIMULATEUR ▾</a>
+    <a class="item orange" href="#" data-svc="valeur"  onclick="showService('valeur');return false;">VALEUR RÉELLE</a>
+    <a class="item orange" href="#" data-svc="rentab"  onclick="showService('rentab');return false;">TAUX DE RENTABILITÉ</a>
+    <a class="item orange" href="#" data-svc="quotite" onclick="showService('quotite');return false;">MA QUOTITÉ CESSIBLE</a>
+  </div>
+
+  <div class="eregul-form" id="form-area">
+    <!-- Contenu chargé dynamiquement par showService() -->
+  </div>
+</section>
+
+<section class="section" id="sites-table-section">
+  <h3 style="color: var(--xup-blue);">Sites litigieux signalés</h3>
+  <table class="gube-table">
+    <thead><tr><th>TF</th><th>ACD</th><th>Lotissement</th><th>Commune</th><th>Nature</th><th>Statut</th></tr></thead>
+    <tbody id="lit-body"></tbody>
+  </table>
+</section>
+
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+
+<script src="assets/js/data.js"></script>
+<script>
+  // ====== Affichage des sites litigieux ======
+  const body = document.getElementById('lit-body');
+  XUP_DATA.sitesLitigieux.forEach(s => {
+    body.insertAdjacentHTML('beforeend', `
+      <tr><td>${s.tf}</td><td>${s.acd}</td><td>${s.lot}</td><td>${s.commune}</td>
+          <td>${s.litige}</td><td><span class="badge badge-orange">${s.statut}</span></td></tr>`);
+  });
+
+  // ====== Formulaires par service ======
+  const FORMS = {
+    etat: () => `
+      <h3>JE VÉRIFIE UN TERRAIN</h3>
+      <div class="form-row"><label>TF N°</label><input type="text" placeholder="ex : TF-12345"></div>
+      <div class="form-row"><label>ACD N°</label><input type="text" placeholder="ex : ACD-2018-100"></div>
+      <div class="form-row"><label>LOTISSEMENT</label><input type="text"></div>
+      <div class="form-row"><label>LIVRE FONCIER</label><input type="text"></div>
+      <div class="right"><button class="btn btn-primary">Valider</button></div>`,
+
+    lit: () => `
+      <h3>JE VÉRIFIE UN SITE LITIGIEUX</h3>
+      <p class="muted small">Saisissez les références du terrain pour vérifier s'il figure dans la base des sites en litige.</p>
+      <div class="form-row"><label>TF N°</label><input type="text"></div>
+      <div class="form-row"><label>ACD N°</label><input type="text"></div>
+      <div class="form-row"><label>Commune</label><input type="text"></div>
+      <div class="right"><button class="btn btn-primary">Rechercher</button></div>`,
+
+    sec: () => `
+      <h3>JE SÉCURISE MON BIEN</h3>
+      <p class="muted small">Inscrivez votre bien à la base sécurisée X-UP (forfait annuel).</p>
+      <div class="form-row"><label>Nature du bien</label><input type="text" placeholder="Terrain / Logement / Commerce"></div>
+      <div class="form-row"><label>Superficie (m²)</label><input type="number"></div>
+      <div class="form-row"><label>TF / ACD</label><input type="text"></div>
+      <div class="form-row"><label>Pièce d'identité</label><input type="text"></div>
+      <div class="right"><button class="btn btn-primary">Soumettre</button></div>`,
+
+    mauv: () => `
+      <h3>SIGNALER UN MAUVAIS LOCATAIRE</h3>
+      <p class="muted small">Procédure contradictoire — incidents majeurs uniquement (impayés, dégradations, occupations illicites).</p>
+      <div class="form-row"><label>Nom du locataire</label><input type="text"></div>
+      <div class="form-row"><label>N° CNI</label><input type="text"></div>
+      <div class="form-row"><label>Nature de l'incident</label>
+        <select><option>Impayés de loyer</option><option>Dégradations</option><option>Occupation illicite</option></select>
+      </div>
+      <div class="form-row"><label>Date</label><input type="date"></div>
+      <div class="right"><button class="btn btn-primary">Signaler</button></div>`,
+
+    valeur: () => `
+      <h3>SIMULATEUR — VALEUR RÉELLE D'UN BIEN</h3>
+      <p class="muted small">Estimation basée sur les transactions internes X-UP et la base ANADER.</p>
+      <div class="form-row"><label>Commune</label>
+        <select>
+          <option>Cocody</option><option>Bingerville</option><option>Plateau</option>
+          <option>Marcory</option><option>Yopougon</option><option>Treichville</option>
+        </select>
+      </div>
+      <div class="form-row"><label>Type</label>
+        <select><option>Terrain nu</option><option>Maison basse</option><option>Maison à étages</option><option>Studio</option><option>Appartement</option></select>
+      </div>
+      <div class="form-row"><label>Superficie (m²)</label><input type="number"></div>
+      <div class="right"><button class="btn btn-primary">Estimer</button></div>`,
+
+    rentab: () => `
+      <h3>SIMULATEUR — TAUX DE RENTABILITÉ LOCATIVE</h3>
+      <p class="muted small">Rendement net annuel : (loyer net × 12 − charges − taxes) ÷ prix d'achat.</p>
+      <div class="form-row"><label>Prix d'achat (FCFA)</label><input type="number" id="r-prix" value="100000000"></div>
+      <div class="form-row"><label>Loyer mensuel (FCFA)</label><input type="number" id="r-loyer" value="800000"></div>
+      <div class="form-row"><label>Charges annuelles (FCFA)</label><input type="number" id="r-charges" value="500000"></div>
+      <div class="form-row"><label>Taux de vacance (%)</label><input type="number" id="r-vac" value="10"></div>
+      <div class="right"><button class="btn btn-primary" onclick="calculRentab()">Calculer</button></div>
+      <div id="r-result" style="margin-top:18px;"></div>`,
+
+    quotite: () => `
+      <h3>SIMULATEUR — MA QUOTITÉ CESSIBLE</h3>
+      <p class="muted small">
+        La <strong>quotité disponible</strong> est la part de votre patrimoine que vous pouvez librement céder ou léguer.
+        Elle se calcule en tenant compte de votre <strong>régime matrimonial</strong> et des
+        <strong>héritiers réservataires</strong> (descendants directs et, à défaut, conjoint survivant).
+      </p>
+
+      <div class="form-row">
+        <label>Régime matrimonial</label>
+        <select id="q-regime">
+          <option value="celibataire">Célibataire / Veuf(ve) / Divorcé(e)</option>
+          <option value="separation">Marié(e) — séparation de biens</option>
+          <option value="communaute">Marié(e) — communauté de biens</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label>Conjoint survivant ?</label>
+        <select id="q-conjoint">
+          <option value="non">Non</option>
+          <option value="oui">Oui</option>
+        </select>
+      </div>
+
+      <div class="form-row">
+        <label>Nombre d'enfants</label>
+        <input type="number" id="q-enfants" min="0" max="20" value="0">
+      </div>
+
+      <div class="form-row">
+        <label>Valeur du bien (FCFA)</label>
+        <input type="number" id="q-valeur" min="0" step="1000" value="50000000">
+      </div>
+
+      <div class="form-row">
+        <label>Origine du bien</label>
+        <select id="q-origine">
+          <option value="propre">Bien propre (acquis avant mariage / héritage)</option>
+          <option value="commun">Bien commun (acquis pendant le mariage)</option>
+        </select>
+      </div>
+
+      <div class="right" style="margin-top:8px">
+        <button class="btn btn-primary" onclick="calculQuotite()">Calculer ma quotité cessible</button>
+      </div>
+
+      <div id="q-result" style="margin-top:24px;"></div>
+
+      <p class="muted small" style="margin-top:24px;border-top:1px dashed #ccc;padding-top:12px;">
+        ⚖ Base juridique : règles successorales OHADA et droit civil ivoirien.
+        Quotité disponible en présence d'enfants : <strong>1/2</strong> (1 enfant), <strong>1/3</strong> (2 enfants), <strong>1/4</strong> (3 enfants et +).
+        En l'absence d'enfants, conjoint réservataire à <strong>1/4</strong>. Calcul informatif — un acte notarié reste indispensable.
+      </p>`,
+  };
+
+  function showService(s) {
+    document.querySelectorAll('.eregul-menu .item').forEach(el => el.classList.remove('selected'));
+    const active = document.querySelector(`.eregul-menu [data-svc="${s}"]`);
+    if (active) active.classList.add('selected');
+    document.getElementById('form-area').innerHTML = (FORMS[s] || FORMS.etat)();
+    // Cache le tableau des litigieux pour les simulateurs
+    document.getElementById('sites-table-section').style.display =
+      (s === 'lit' || s === 'etat' || s === undefined) ? 'block' : 'none';
+  }
+  window.showService = showService;
+
+  // ====== Calcul rentabilité ======
+  function calculRentab() {
+    const prix    = +document.getElementById('r-prix').value || 0;
+    const loyer   = +document.getElementById('r-loyer').value || 0;
+    const charges = +document.getElementById('r-charges').value || 0;
+    const vac     = +document.getElementById('r-vac').value || 0;
+    const loyerNet = loyer * 12 * (1 - vac/100) - charges;
+    const taux = prix > 0 ? (loyerNet / prix * 100) : 0;
+    const fmt = v => new Intl.NumberFormat('fr-FR').format(Math.round(v)) + ' FCFA';
+    document.getElementById('r-result').innerHTML = `
+      <div style="padding:16px;background:#fff;border:1px solid #ddd;border-left:4px solid var(--xup-blue);">
+        <p style="margin:0 0 6px;font-weight:700;color:var(--xup-blue);font-size:18px;">Taux de rentabilité net : ${taux.toFixed(2)} %</p>
+        <p class="small muted" style="margin:0;">Revenu locatif net : ${fmt(loyerNet)} / an</p>
+      </div>`;
+  }
+  window.calculRentab = calculRentab;
+
+  // ====== Calcul Quotité Cessible ======
+  function calculQuotite() {
+    const regime   = document.getElementById('q-regime').value;
+    const conjoint = document.getElementById('q-conjoint').value === 'oui';
+    const enfants  = Math.max(0, parseInt(document.getElementById('q-enfants').value) || 0);
+    const valeur   = Math.max(0, parseFloat(document.getElementById('q-valeur').value) || 0);
+    const origine  = document.getElementById('q-origine').value;
+
+    // 1. Part personnelle du défunt selon le régime + l'origine du bien
+    let partPersonnelle = 1;
+    let noteRegime = "";
+    if (regime === 'communaute' && origine === 'commun') {
+      partPersonnelle = 0.5;
+      noteRegime = "Bien commun en communauté : seule la moitié (1/2) entre dans la succession ; l'autre moitié revient au conjoint au titre de la communauté.";
+    } else if (regime === 'communaute' && origine === 'propre') {
+      partPersonnelle = 1;
+      noteRegime = "Bien propre : reste à 100 % dans le patrimoine personnel malgré le régime de communauté.";
+    } else if (regime === 'separation') {
+      partPersonnelle = 1;
+      noteRegime = "Régime de séparation : la totalité du bien appartient au propriétaire.";
+    } else {
+      partPersonnelle = 1;
+      noteRegime = "Pas de communauté à partager : la totalité du bien entre dans la succession.";
+    }
+
+    const valeurSuccession = valeur * partPersonnelle;
+
+    // 2. Calcul de la quotité disponible (Code civil ivoirien / OHADA)
+    let reserveRate = 0;
+    let detailReserve = "";
+    if (enfants === 0 && conjoint) {
+      reserveRate = 1/4;
+      detailReserve = "Aucun descendant ; conjoint survivant réservataire à 1/4.";
+    } else if (enfants === 1) {
+      reserveRate = 1/2;
+      detailReserve = "1 enfant réservataire → réserve = 1/2.";
+    } else if (enfants === 2) {
+      reserveRate = 2/3;
+      detailReserve = "2 enfants réservataires → réserve = 2/3 (1/3 par enfant).";
+    } else if (enfants >= 3) {
+      reserveRate = 3/4;
+      detailReserve = `${enfants} enfants réservataires → réserve = 3/4 (${(75/enfants).toFixed(2)} % par enfant).`;
+    } else {
+      reserveRate = 0;
+      detailReserve = "Aucun héritier réservataire : 100 % du bien est librement cessible.";
+    }
+
+    const quotiteRate   = 1 - reserveRate;
+    const quotiteMontant = valeurSuccession * quotiteRate;
+    const reserveMontant = valeurSuccession * reserveRate;
+
+    const fmtXOF = v => new Intl.NumberFormat('fr-FR').format(Math.round(v)) + ' FCFA';
+    const pct    = r => (r * 100).toFixed(2) + ' %';
+
+    document.getElementById('q-result').innerHTML = `
+      <div style="background:#fff;border:1px solid #ddd;border-left:5px solid var(--xup-blue);padding:18px;">
+        <h4 style="margin:0 0 14px;color:var(--xup-blue);">Résultat du calcul</h4>
+
+        <table style="width:100%;border-collapse:collapse;">
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px 0;">Valeur totale du bien</td>
+            <td style="padding:8px 0;text-align:right;font-weight:600;">${fmtXOF(valeur)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px 0;">Part entrant dans la succession (${pct(partPersonnelle)})</td>
+            <td style="padding:8px 0;text-align:right;font-weight:600;">${fmtXOF(valeurSuccession)}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;background:#FEF3DB;">
+            <td style="padding:10px 0;color:#9C5F00;"><strong>Réserve héréditaire (${pct(reserveRate)})</strong></td>
+            <td style="padding:10px 0;text-align:right;font-weight:700;color:#9C5F00;">${fmtXOF(reserveMontant)}</td>
+          </tr>
+          <tr style="background:#E6F1F9;">
+            <td style="padding:12px 0;color:var(--xup-blue);font-size:17px;"><strong>Quotité disponible (cessible) — ${pct(quotiteRate)}</strong></td>
+            <td style="padding:12px 0;text-align:right;font-weight:800;color:var(--xup-blue);font-size:18px;">${fmtXOF(quotiteMontant)}</td>
+          </tr>
+        </table>
+
+        <div style="margin-top:14px;padding:10px 14px;background:#FAFAFA;border-left:3px solid #B5B5B5;">
+          <p class="small muted" style="margin:0 0 6px;"><strong>Régime :</strong> ${noteRegime}</p>
+          <p class="small muted" style="margin:0;"><strong>Héritiers :</strong> ${detailReserve}</p>
+        </div>
+
+        <p class="small" style="margin-top:14px;color:#888;">
+          <em>Vous pouvez librement disposer de la quotité cessible par donation, vente, legs ou mise en garantie.
+          La réserve, elle, doit obligatoirement revenir aux héritiers réservataires.</em>
+        </p>
+      </div>`;
+  }
+  window.calculQuotite = calculQuotite;
+
+  // Affichage initial : formulaire ÉTAT FONCIER
+  showService('etat');
+</script>
+<script src="assets/js/app.js"></script>
+</body></html>
