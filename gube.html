@@ -4,18 +4,7 @@
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>X-UPsarl — Le GUBE — Vue d'ensemble</title>
 <link rel="stylesheet" href="assets/css/style.css">
-<meta name="description" content="Gestion administrative et locative du patrimoine villageois sous bail emphytéotique. Contrats, patrimoine, locataires pour les villages d'Anono, Akouai-Santai et Anonkouakouté.">
-<meta name="keywords" content="immobilier, bail emphytéotique, Côte d'Ivoire, Abidjan, investissement participatif, X-UPsarl, crowdfunding immobilier">
-<meta name="author" content="X-UPsarl">
-<meta property="og:type" content="website">
-<meta property="og:title" content="X-UPsarl — Le GUBE | Guichet Unique Villageois du Bail Emphytéotique">
-<meta property="og:description" content="Gestion administrative et locative du patrimoine villageois sous bail emphytéotique. Contrats, patrimoine, locataires pour les villages d'Anono, Akouai-Santai et Anonkouakouté.">
-<meta property="og:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
-<meta property="og:locale" content="fr_CI">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="X-UPsarl — Le GUBE | Guichet Unique Villageois du Bail Emphytéotique">
-<meta name="twitter:description" content="Gestion administrative et locative du patrimoine villageois sous bail emphytéotique. Contrats, patrimoine, locataires pour les villages d'Anono, Akouai-Santai et Anonkouakouté.">
-<meta name="twitter:image" content="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1200&q=80">
+<meta name="description" content="Gestion administrative et locative du patrimoine villageois sous bail emphytéotique.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">
 </head>
 <body>
@@ -37,12 +26,10 @@
   </div>
 </header>
 
-<!-- BANDEAU VILLAGE -->
 <section class="gube-banner">
   <div class="gube-banner-caption">CONTRÔLE ET DE REGULATION DES BAUX VILLAGEOIS ▾</div>
 </section>
 
-<!-- SELECTION VILLAGE -->
 <div class="village-selector">
   <label>Sélectionner le Village</label>
   <select name="village" id="sel-village">
@@ -52,16 +39,16 @@
   </select>
 </div>
 
-<!-- TABS -->
 <div class="gube-tabs">
   <a class="tab active">Vue d'ensemble</a>
+  <span class="tab-sep">|</span>
+  <a class="tab" href="gube-plan.html">Plan / Cadastre</a>
   <span class="tab-sep">|</span>
   <a class="tab" href="gube-contrats.html">Contrats de Bail</a>
   <span class="tab-sep">|</span>
   <a class="tab" href="gube-patrimoine.html">Patrimoine</a>
 </div>
 
-<!-- STATS -->
 <div class="gube-stats" data-stats-village="V001" id="stats-box">
   <div class="gube-stat"><span class="num s-contrats">1250</span><span class="label">Contrats</span></div>
   <div class="gube-stat"><span class="num s-preneurs">300</span><span class="label">Preneurs</span></div>
@@ -70,7 +57,6 @@
   <div class="gube-stat"><span class="num s-quartiers">06</span><span class="label">Quartiers</span></div>
 </div>
 
-<!-- CONTRATS RÉCENTS -->
 <div class="recent-contrats">
   <h4>Contrats récents</h4>
   <div class="recent-grid">
@@ -78,27 +64,13 @@
     <div class="head">Ilôt</div><div class="head">Sup.</div><div class="head">Bailleur/Proprio</div><div class="head">Preneur</div>
     <div class="cell">V001-GUBE-AO091A</div><div class="cell">Terrain nu</div><div class="cell">Lot 91</div>
     <div class="cell">Ilot 12</div><div class="cell">600 m²</div><div class="cell">KOUASSI B.</div><div class="cell">KOUAME J.-P.</div>
-
     <div class="cell">V001-GUBE-AO092A</div><div class="cell">Maisons Basses</div><div class="cell">Lot 14</div>
     <div class="cell">Ilot 03</div><div class="cell">850 m²</div><div class="cell">KOUAME D.</div><div class="cell">TRAORE M.</div>
-
     <div class="cell">V001-GUBE-AO093A</div><div class="cell">Maisons à Etages</div><div class="cell">Lot 22</div>
     <div class="cell">Ilot 05</div><div class="cell">720 m²</div><div class="cell">N'DRI S.</div><div class="cell">DIABATE M.</div>
-
-    <div class="cell">V001-GUBE-AO094A</div><div class="cell">Terrain nu</div><div class="cell">Lot 32</div>
-    <div class="cell">Ilot 04</div><div class="cell">500 m²</div><div class="cell">KOUASSI P.</div><div class="cell">TRAORE A.</div>
-
-    <div class="cell">V001-GUBE-AO095A</div><div class="cell">Mixte</div><div class="cell">Lot 18</div>
-    <div class="cell">Ilot 06</div><div class="cell">920 m²</div><div class="cell">YAO D.</div><div class="cell">SORO K.</div>
-
-    <div class="cell">V001-GUBE-AO096A</div><div class="cell">Maisons Basses</div><div class="cell">Lot 25</div>
-    <div class="cell">Ilot 07</div><div class="cell">700 m²</div><div class="cell">N'GUESSAN A.</div><div class="cell">DIALLO H.</div>
-
-    <div class="cell">V001-GUBE-AO097A</div><div class="cell">Maisons à Etages</div><div class="cell">Lot 30</div>
-    <div class="cell">Ilot 08</div><div class="cell">810 m²</div><div class="cell">BAMBA Y.</div><div class="cell">KONE M.</div>
   </div>
   <div style="margin-top:18px;display:flex;justify-content:space-between;align-items:center;padding:10px 16px;background:var(--xup-orange-soft);">
-    <span><a href="index.html" class="muted">⌂ Accueil</a> &nbsp; <a href="#" class="muted">≡ Menu</a></span>
+    <span><a href="index.html" class="muted">⌂ Accueil</a> &nbsp; <a href="gube-plan.html" class="muted">≡ Plan</a></span>
     <button class="btn btn-brown">⌕ Rechercher</button>
   </div>
 </div>
@@ -111,17 +83,19 @@
 
 <script src="assets/js/data.js"></script>
 <script>
-  document.getElementById('sel-village').addEventListener('change', e => {
-    const code = e.target.value;
-    const box = document.getElementById('stats-box');
-    box.setAttribute('data-stats-village', code);
-    const s = XUP_DATA.statsVillage[code];
-    box.querySelector('.s-contrats').textContent = s.contrats;
-    box.querySelector('.s-preneurs').textContent = s.preneurs;
-    box.querySelector('.s-bailleurs').textContent = s.bailleurs;
-    box.querySelector('.s-locataires').textContent = s.locataires;
-    box.querySelector('.s-quartiers').textContent = String(s.quartiers).padStart(2,'0');
-  });
+  var sel=document.getElementById('sel-village');
+  if(sel&&window.XUP_DATA&&XUP_DATA.statsVillage){
+    sel.addEventListener('change', function(e){
+      var code=e.target.value, box=document.getElementById('stats-box'), s=XUP_DATA.statsVillage[code];
+      if(!s) return;
+      box.setAttribute('data-stats-village', code);
+      box.querySelector('.s-contrats').textContent=s.contrats;
+      box.querySelector('.s-preneurs').textContent=s.preneurs;
+      box.querySelector('.s-bailleurs').textContent=s.bailleurs;
+      box.querySelector('.s-locataires').textContent=s.locataires;
+      box.querySelector('.s-quartiers').textContent=String(s.quartiers).padStart(2,'0');
+    });
+  }
 </script>
 <script src="assets/js/app.js"></script>
 </body></html>

@@ -1,46 +1,5 @@
-# X-UPsarl — éléments à ne pas versionner
-
-# macOS
 .DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-.venv/
-venv/
-.python-version
-
-# Base SQLite locale (régénérée par serve.py au démarrage)
-db/xup.db
-db/*.db-journal
-db/*.db-wal
-db/*.db-shm
-
-# IDE / Éditeurs
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# Logs et temp
-*.log
-.cache/
-.tmp/
-
-# Builds
-dist/
-build/
-node_modules/
-
-# Secrets éventuels
-.env
-.env.local
-.env.*.local
-
-# ZIP livraison (généré, pas versionné)
 *.zip
+__pycache__/
+*.pyc
+db/*.db

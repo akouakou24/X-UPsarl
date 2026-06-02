@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>X-UPsarl — Le GUBE — Plan dématérialisé</title>
+<link rel="stylesheet" href="assets/css/style.css">
+<meta name="description" content="Plan cadastral dématérialisé : zones, îlots et lots. Plan réel zoomable + navigation structurée.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo.svg">
+<style>
+  .plan-wrap{max-width:1240px;margin:0 auto;padding:0 16px 48px;}
+  .plan-head{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;margin:18px 0 6px;}
+  .plan-head h2{color:var(--xup-blue);margin:0;font-size:1.35rem;}
+  .breadcrumb{font-size:.92rem;color:var(--xup-text-soft);margin:4px 0 14px;}
+  .breadcrumb a{cursor:pointer;color:var(--xup-blue);}
+  .breadcrumb .sep{margin:0 6px;color:var(--xup-border);}
+  .plan-kpis{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+  .kpi{background:var(--xup-blue-soft);border:1px solid var(--xup-border);border-radius:8px;padding:8px 16px;text-align:center;min-width:90px;}
+  .kpi .n{display:block;font-size:1.4rem;font-weight:700;color:var(--xup-blue);}
+  .kpi .l{font-size:.7rem;text-transform:uppercase;letter-spacing:.04em;color:var(--xup-text-soft);}
+  .layout{display:grid;grid-template-columns:1fr;gap:18px;}
+  @media(min-width:900px){.layout.split{grid-template-columns:1.4fr 1fr;}}
+  .grid-zones{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;}
+  .card-z{background:var(--xup-white);border:1px solid var(--xup-border);border-left:6px solid var(--c,var(--xup-blue));border-radius:8px;padding:14px;cursor:pointer;transition:.15s;}
+  .card-z:hover{box-shadow:0 4px 14px rgba(34,128,196,.18);transform:translateY(-2px);}
+  .card-z .t{font-weight:700;color:var(--xup-text);font-size:1.05rem;}
+  .card-z .sub{font-size:.78rem;color:var(--xup-text-soft);margin-top:4px;line-height:1.35;}
+  .card-z .b{display:inline-block;margin-top:8px;background:var(--xup-orange-soft);color:var(--xup-brown);font-size:.72rem;font-weight:700;padding:2px 8px;border-radius:10px;}
+  .grid-ilots{display:grid;grid-template-columns:repeat(auto-fill,minmax(74px,1fr));gap:9px;}
+  .chip-il{background:var(--xup-bg-soft);border:1px solid var(--xup-border);border-radius:8px;padding:10px 4px;text-align:center;cursor:pointer;transition:.15s;}
+  .chip-il:hover{border-color:var(--xup-blue);background:var(--xup-blue-soft);}
+  .chip-il .n{font-weight:700;color:var(--xup-text);font-size:.92rem;}
+  .chip-il .l{display:block;font-size:.64rem;color:var(--xup-text-soft);margin-top:2px;}
+  .viewer{position:relative;border:1px solid var(--xup-border);border-radius:8px;overflow:hidden;background:#fbfbfb;height:560px;cursor:grab;}
+  .viewer.dragging{cursor:grabbing;}
+  .viewer img{position:absolute;top:0;left:0;transform-origin:0 0;user-select:none;-webkit-user-drag:none;}
+  .vtools{position:absolute;right:10px;bottom:10px;display:flex;gap:6px;z-index:5;}
+  .vtools button{width:34px;height:34px;border:none;border-radius:6px;background:var(--xup-blue);color:#fff;font-size:1.1rem;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+  .vtools button:hover{background:var(--xup-blue-dark);}
+  .vhint{position:absolute;left:10px;top:10px;background:rgba(255,255,255,.9);border:1px solid var(--xup-border);border-radius:6px;padding:4px 10px;font-size:.74rem;color:var(--xup-text-soft);z-index:5;}
+  .panel h4{margin:0 0 10px;color:var(--xup-blue);}
+  .empty{background:var(--xup-orange-soft);border:1px dashed var(--xup-orange-light);border-radius:8px;padding:14px;color:var(--xup-brown);font-size:.86rem;}
+  .empty b{display:block;margin-bottom:4px;}
+  .btn-back{background:var(--xup-brown);color:#fff;border:none;border-radius:6px;padding:7px 13px;cursor:pointer;font-weight:600;font-size:.86rem;}
+  .modebar{display:flex;gap:8px;margin:0 0 14px;}
+  .modebar a{padding:7px 14px;border-radius:20px;font-size:.85rem;font-weight:600;cursor:pointer;border:1px solid var(--xup-border);color:var(--xup-text-soft);}
+  .modebar a.active{background:var(--xup-blue);color:#fff;border-color:var(--xup-blue);}
+  table.lots{width:100%;border-collapse:collapse;font-size:.84rem;}
+  table.lots th{background:var(--xup-blue);color:#fff;padding:7px;text-align:left;}
+  table.lots td{border-bottom:1px solid var(--xup-border);padding:6px 8px;}
+  .note{font-size:.8rem;color:var(--xup-text-soft);margin-top:18px;border-top:1px dashed var(--xup-border);padding-top:10px;}
+</style>
+</head>
+<body>
+<header class="xup-header">
+  <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
+  <nav class="xup-nav">
+    <a href="index.html" class="home">⌂</a>
+    <a href="concept.html">Le Concept</a>
+    <a href="investir.html">Investir</a>
+    <a href="e-regul.html">e-Régul</a>
+    <a href="gube.html" class="active">Le GUBE</a>
+    <a href="contacts.html">Contacts</a>
+  </nav>
+  <div class="xup-header-right">
+    <div class="xup-search"><input type="search"><button class="btn-search">⌕</button></div>
+    <a href="connexion.html" class="btn-connexion">CONNEXION</a>
+    <a href="inscription.html" class="btn-inscription">INSCRIPTION</a>
+  </div>
+</header>
+<section class="gube-banner">
+  <div class="gube-banner-caption">PLAN DÉMATÉRIALISÉ DU PATRIMOINE VILLAGEOIS ▾</div>
+</section>
+<div class="village-selector">
+  <label>Sélectionner le Village</label>
+  <select name="village" id="sel-village"></select>
+</div>
+<div class="gube-tabs">
+  <a class="tab" href="gube.html">Vue d'ensemble</a>
+  <span class="tab-sep">|</span>
+  <a class="tab active">Plan / Cadastre</a>
+  <span class="tab-sep">|</span>
+  <a class="tab" href="gube-contrats.html">Contrats de Bail</a>
+  <span class="tab-sep">|</span>
+  <a class="tab" href="gube-patrimoine.html">Patrimoine</a>
+</div>
+<div class="plan-wrap">
+  <div class="plan-head"><h2 id="title">Plan</h2></div>
+  <div class="breadcrumb" id="crumb"></div>
+  <div class="modebar" id="modebar"></div>
+  <div class="plan-kpis" id="kpis"></div>
+  <div id="view"></div>
+  <div class="note" id="footnote"></div>
+</div>
+<footer class="xup-footer">
+  <div>© 2026 — <strong>XUP Sarl</strong> | Tous droits réservés</div>
+  <div><a href="#">Mentions Légales</a> | <a href="#">CGU</a> | <a href="#">FAQ</a></div>
+  <div class="social">SUIVEZ NOUS SUR <a href="#">f</a><a href="#">t</a><a href="#">in</a></div>
+</footer>
+<script src="assets/js/anono-cadastre.js"></script>
+<script>
+const VILS=window.XUP_CADASTRE.villages, $=id=>document.getElementById(id);
+let V=VILS[0], state={zone:null,ilot:null,mode:'zones'};
+$('sel-village').innerHTML=VILS.map((v,i)=>`<option value="${i}">${v.nom.toUpperCase()}</option>`).join('');
+$('sel-village').addEventListener('change',e=>{V=VILS[+e.target.value];state={zone:null,ilot:null,mode:V.has_zones?'zones':'plan'};render();});
+function kpi(n,l){return `<div class="kpi"><span class="n">${n}</span><span class="l">${l}</span></div>`;}
+function viewerHTML(src){return `<div class="viewer" id="vp"><div class="vhint">Molette = zoom · glisser = déplacer</div>
+  <img id="vimg" src="${src}" draggable="false">
+  <div class="vtools"><button onclick="vzoom(1.25)">+</button><button onclick="vzoom(0.8)">−</button><button onclick="vreset()">⟲</button></div></div>`;}
+let vp,vimg,vs=1,vx=0,vy=0,drag=false,lx=0,ly=0,baseFit=1;
+function vapply(){vimg.style.transform=`translate(${vx}px,${vy}px) scale(${vs})`;}
+function vfit(){const cw=vp.clientWidth,ch=vp.clientHeight,iw=vimg.naturalWidth,ih=vimg.naturalHeight;baseFit=Math.min(cw/iw,ch/ih);vs=baseFit;vx=(cw-iw*vs)/2;vy=(ch-ih*vs)/2;vapply();}
+function vzoom(f){const cw=vp.clientWidth,ch=vp.clientHeight,cx=cw/2,cy=ch/2,ns=Math.max(baseFit*0.8,Math.min(vs*f,baseFit*14));vx=cx-(cx-vx)*(ns/vs);vy=cy-(cy-vy)*(ns/vs);vs=ns;vapply();}
+function vreset(){vfit();}
+window.vzoom=vzoom;window.vreset=vreset;
+function bindViewer(){vp=$('vp');vimg=$('vimg');if(!vp)return;const init=()=>vfit();if(vimg.complete)init();else vimg.onload=init;
+  vp.addEventListener('wheel',e=>{e.preventDefault();const r=vp.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top,f=e.deltaY<0?1.15:0.87,ns=Math.max(baseFit*0.8,Math.min(vs*f,baseFit*14));vx=mx-(mx-vx)*(ns/vs);vy=my-(my-vy)*(ns/vs);vs=ns;vapply();},{passive:false});
+  vp.addEventListener('mousedown',e=>{drag=true;vp.classList.add('dragging');lx=e.clientX;ly=e.clientY;});
+  window.addEventListener('mousemove',e=>{if(!drag)return;vx+=e.clientX-lx;vy+=e.clientY-ly;lx=e.clientX;ly=e.clientY;vapply();});
+  window.addEventListener('mouseup',()=>{drag=false;vp&&vp.classList.remove('dragging');});}
+function modebar(){if(!V.has_zones){$('modebar').innerHTML='';return;}
+  $('modebar').innerHTML=`<a class="${state.mode==='zones'?'active':''}" onclick="setMode('zones')">Navigation par zones</a><a class="${state.mode==='plan'?'active':''}" onclick="setMode('plan')">Plan global</a>`;}
+function setMode(m){state.mode=m;state.zone=null;state.ilot=null;render();}window.setMode=setMode;
+function render(){modebar();
+  $('footnote').innerHTML=V.has_zones?"Source : plan d'Anono. Hiérarchie : 13 zones · 108 îlots. Chaque parcelle numérotée du plan est un lot ; les données (superficie, propriétaire, statut, GPS) se saisissent via le registre.":("Source : plan Akouai-Santai. "+(V.note||""));
+  if(!V.has_zones||state.mode==='plan'){state.zone=null;state.ilot=null;$('title').textContent=`Plan global — ${V.nom}`;$('crumb').innerHTML=`<b>${V.nom}</b><span class="sep">›</span>Plan global`;$('kpis').innerHTML=V.has_zones?kpi(V.nb_zones,'Zones')+kpi(V.nb_ilots,'Îlots'):'';$('view').className='layout';$('view').innerHTML=viewerHTML(V.global_img);bindViewer();return;}
+  if(state.ilot){renderIlot();return;}if(state.zone){renderZone();return;}renderZones();}
+function renderZones(){$('title').textContent=`Plan d'${V.nom} — ${V.nb_zones} zones`;$('crumb').innerHTML=`<b>${V.nom}</b>`;$('kpis').innerHTML=kpi(V.nb_zones,'Zones')+kpi(V.nb_ilots,'Îlots')+kpi('—','Lots saisis');$('view').className='layout';
+  $('view').innerHTML=`<div class="grid-zones">`+V.zones.map(z=>`<div class="card-z" style="--c:${z.couleur}" onclick="openZone(${z.numero})"><div class="t">Zone ${z.numero}</div><div class="sub">${z.composition}</div><span class="b">${z.ilots.length} îlots</span></div>`).join('')+`</div>`;}
+function openZone(num){state.zone=V.zones.find(z=>z.numero===num);state.ilot=null;render();}window.openZone=openZone;
+function renderZone(){const z=state.zone;$('title').textContent=`Zone ${z.numero}`;$('crumb').innerHTML=`<a onclick="setMode('zones')">${V.nom}</a><span class="sep">›</span><b>Zone ${z.numero}</b>`;$('kpis').innerHTML=kpi(z.ilots.length,'Îlots')+kpi(z.ilots.reduce((a,i)=>a+i.lots.length,0),'Lots saisis');$('view').className='layout split';
+  $('view').innerHTML=viewerHTML(z.img)+`<div class="panel"><h4 style="border-bottom:3px solid ${z.couleur};padding-bottom:6px;display:inline-block">Îlots de la Zone ${z.numero}</h4><div style="font-size:.8rem;color:var(--xup-text-soft);margin:6px 0 12px">${z.composition}</div><div class="grid-ilots">`+z.ilots.map(i=>`<div class="chip-il" onclick="openIlot('${i.numero.replace(/'/g,"\\'")}')"><span class="n">${i.numero}</span><span class="l">${i.lots.length} lots</span></div>`).join('')+`</div></div>`;bindViewer();}
+function openIlot(num){state.ilot=state.zone.ilots.find(i=>i.numero===num);render();}window.openIlot=openIlot;
+function renderIlot(){const z=state.zone,i=state.ilot;$('title').textContent=`Zone ${z.numero} — Îlot ${i.numero}`;$('crumb').innerHTML=`<a onclick="setMode('zones')">${V.nom}</a><span class="sep">›</span><a onclick="openZone(${z.numero})">Zone ${z.numero}</a><span class="sep">›</span><b>Îlot ${i.numero}</b>`;$('kpis').innerHTML=kpi(i.lots.length,'Lots');$('view').className='layout split';
+  let right;if(i.lots.length===0){right=`<div class="panel"><h4>Lots de l'îlot ${i.numero}</h4><div class="empty"><b>Aucun lot saisi.</b>Les numéros de lots sont visibles sur le plan ci-contre. Saisissez-les (numéro, superficie, propriétaire, statut foncier, GPS) dans le registre Excel ou via les opérateurs.</div></div>`;}
+  else{const rows=i.lots.map(l=>`<tr><td>${l.numero}</td><td>${l.superficie||'—'}</td><td>${l.statut_foncier||'—'}</td><td>${l.proprietaire||'—'}</td><td>${l.gps||'—'}</td></tr>`).join('');right=`<div class="panel"><h4>Lots de l'îlot ${i.numero}</h4><table class="lots"><thead><tr><th>N° Lot</th><th>Sup. (m²)</th><th>Statut</th><th>Propriétaire</th><th>GPS</th></tr></thead><tbody>${rows}</tbody></table></div>`;}
+  $('view').innerHTML=viewerHTML(z.img)+`<div><button class="btn-back" onclick="openZone(${z.numero})" style="margin-bottom:12px">‹ Zone ${z.numero}</button>${right}</div>`;bindViewer();}
+state.mode=V.has_zones?'zones':'plan';render();
+</script>
+</body></html>
