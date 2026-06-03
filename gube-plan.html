@@ -49,7 +49,7 @@
   table.lots td{border-bottom:1px solid var(--xup-border);padding:6px 8px;}
   .note{font-size:.8rem;color:var(--xup-text-soft);margin-top:18px;border-top:1px dashed var(--xup-border);padding-top:10px;}
 </style>
-</head>
+<link rel="stylesheet" href="/assets/css/responsive.css"><link rel="manifest" href="/manifest.webmanifest"><meta name="theme-color" content="#2280C4"><link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png"></head>
 <body>
 <header class="xup-header">
   <a href="index.html" class="xup-logo"><img src="assets/img/logo-compact.svg" alt="X-UPsarl"></a>
@@ -129,7 +129,11 @@ function renderZones(){$('title').textContent=`Plan d'${V.nom} — ${V.nb_zones}
 function openZone(num){state.zone=V.zones.find(z=>z.numero===num);state.ilot=null;render();}window.openZone=openZone;
 function renderZone(){const z=state.zone;$('title').textContent=`Zone ${z.numero}`;$('crumb').innerHTML=`<a onclick="setMode('zones')">${V.nom}</a><span class="sep">›</span><b>Zone ${z.numero}</b>`;$('kpis').innerHTML=kpi(z.ilots.length,'Îlots')+kpi(z.ilots.reduce((a,i)=>a+i.lots.length,0),'Lots saisis');$('view').className='layout split';
   $('view').innerHTML=viewerHTML(z.img)+`<div class="panel"><h4 style="border-bottom:3px solid ${z.couleur};padding-bottom:6px;display:inline-block">Îlots de la Zone ${z.numero}</h4><div style="font-size:.8rem;color:var(--xup-text-soft);margin:6px 0 12px">${z.composition}</div><div class="grid-ilots">`+z.ilots.map(i=>`<a class="chip-il" style="text-decoration:none;color:inherit" href="/cadastre/go?zone=${z.numero}&num=${encodeURIComponent(i.numero)}"><span class="n">${i.numero}</span><span class="l" data-ilot="${i.numero}">… lots</span></a>`).join('')+`</div></div>`;bindViewer();loadCounts(z.numero);}
-function loadCounts(znum){fetch('/cadastre/api/zone/'+znum+'/counts').then(r=>r.json()).then(c=>{document.querySelectorAll('[data-ilot]').forEach(el=>{var n=c[el.getAttribute('data-ilot')];el.textContent=(n||0)+' lots';});}).catch(()=>{document.querySelectorAll('[data-ilot]').forEach(el=>el.textContent='— lots');});}
+function loadCounts(znum){fetch('/cadastre/api/zone/'+znum+'/counts').then(r=>{if(!r.ok)throw 0;return r.json();}).then(c=>{document.querySelectorAll('[data-ilot]').forEach(el=>{var n=c[el.getAttribute('data-ilot')];el.textContent=(n||0)+' lots';});}).catch(()=>{
+  // Pas de back-end (ex. version statique Netlify) : afficher le plan, désactiver l'édition
+  document.querySelectorAll('[data-ilot]').forEach(el=>el.textContent='plan');
+  document.querySelectorAll('a.chip-il').forEach(a=>{a.addEventListener('click',function(e){e.preventDefault();alert("Consultation du plan disponible.\n\nLa gestion des lots (saisie, validation maker/checker/DG, signatures) nécessite le serveur applicatif X-UPsarl, hébergé séparément. Reliez la version en ligne à ce serveur pour activer l'édition.");});});
+});}
 function openIlot(num){state.ilot=state.zone.ilots.find(i=>i.numero===num);render();}window.openIlot=openIlot;
 function renderIlot(){const z=state.zone,i=state.ilot;$('title').textContent=`Zone ${z.numero} — Îlot ${i.numero}`;$('crumb').innerHTML=`<a onclick="setMode('zones')">${V.nom}</a><span class="sep">›</span><a onclick="openZone(${z.numero})">Zone ${z.numero}</a><span class="sep">›</span><b>Îlot ${i.numero}</b>`;$('kpis').innerHTML=kpi(i.lots.length,'Lots');$('view').className='layout split';
   let right;if(i.lots.length===0){right=`<div class="panel"><h4>Lots de l'îlot ${i.numero}</h4><div class="empty"><b>Aucun lot saisi.</b>Les numéros de lots sont visibles sur le plan ci-contre. Saisissez-les (numéro, superficie, propriétaire, statut foncier, GPS) dans le registre Excel ou via les opérateurs.</div></div>`;}
@@ -137,4 +141,4 @@ function renderIlot(){const z=state.zone,i=state.ilot;$('title').textContent=`Zo
   $('view').innerHTML=viewerHTML(z.img)+`<div><button class="btn-back" onclick="openZone(${z.numero})" style="margin-bottom:12px">‹ Zone ${z.numero}</button>${right}</div>`;bindViewer();}
 state.mode=V.has_zones?'zones':'plan';render();
 </script>
-</body></html>
+<script src="/assets/js/layout.js"></script></body></html>

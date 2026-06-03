@@ -40,6 +40,11 @@
   status = 200
 
 [[redirects]]
+  from = "/gube-plan"
+  to = "/gube-plan.html"
+  status = 200
+
+[[redirects]]
   from = "/concept"
   to = "/concept.html"
   status = 200
@@ -73,6 +78,40 @@
   from = "/contacts"
   to = "/contacts.html"
   status = 200
+
+# -------------------------------------------------------------------------
+# BLOCAGE des fichiers serveur (jamais exposés sur la version statique)
+# -------------------------------------------------------------------------
+[[redirects]]
+  from = "/db/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/uploads/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/*.py"
+  to = "/404.html"
+  status = 404
+  force = true
+
+[[redirects]]
+  from = "/Plan%20Anono/*"
+  to = "/404.html"
+  status = 404
+  force = true
+
+# Routes du module de gestion (back-end Flask) : renvoyer au plan sur la version statique
+[[redirects]]
+  from = "/cadastre/*"
+  to = "/gube-plan.html"
+  status = 302
+  force = true
 
 # Page 404 personnalisée (capture toutes les URLs inconnues)
 [[redirects]]
@@ -113,3 +152,17 @@
   for = "*.html"
   [headers.values]
     Cache-Control = "public, max-age=0, must-revalidate"
+
+# -------------------------------------------------------------------------
+# PWA — service worker et manifeste
+# -------------------------------------------------------------------------
+[[headers]]
+  for = "/service-worker.js"
+  [headers.values]
+    Cache-Control = "no-cache"
+
+[[headers]]
+  for = "/manifest.webmanifest"
+  [headers.values]
+    Content-Type = "application/manifest+json"
+    Cache-Control = "public, max-age=86400"

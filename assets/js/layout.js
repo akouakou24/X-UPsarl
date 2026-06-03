@@ -65,4 +65,11 @@
   if (document.readyState === "loading")
     document.addEventListener("DOMContentLoaded", build);
   else build();
+
+  // PWA : enregistrement du service worker
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function () {
+      navigator.serviceWorker.register("/service-worker.js").catch(function () {});
+    });
+  }
 })();
