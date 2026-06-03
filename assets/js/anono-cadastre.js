@@ -1,4 +1,4 @@
-/* X-UPsarl — Cadastre dématérialisé. Lots vides : données métier absentes du plan. */
+/* X-UPsarl — Cadastre Anono. Navigation par zone = image de la zone ; Plan global = plan complet. */
 window.XUP_CADASTRE = {
   "villages": [
     {
@@ -14,7 +14,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 1",
           "composition": "ilôts 1 à 7 - 9 à 12 - 20 - 69 à 70 - 76 à 77 Bis",
           "couleur": "#E30613",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-1.jpg",
           "ilots": [
             {
               "numero": "1",
@@ -91,7 +91,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 2",
           "composition": "ilôts 29 à 30 - 33 à 34 - 65 Bis à 68",
           "couleur": "#1FA12C",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-2.jpg",
           "ilots": [
             {
               "numero": "29",
@@ -132,7 +132,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 3",
           "composition": "ilôts 65 - 95 à 98 - 101 à 103",
           "couleur": "#8B1A1A",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-3.jpg",
           "ilots": [
             {
               "numero": "65",
@@ -173,7 +173,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 4",
           "composition": "ilôts 104 à 108",
           "couleur": "#000000",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-4.jpg",
           "ilots": [
             {
               "numero": "104",
@@ -202,7 +202,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 5",
           "composition": "ilôts 26 à 27 - 31 à 32 - 35 à 36 - 99 à 100",
           "couleur": "#7B2FBE",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-5.jpg",
           "ilots": [
             {
               "numero": "26",
@@ -243,7 +243,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 6",
           "composition": "ilôts 42 à 48 - 50 à 51 Bis",
           "couleur": "#F06EAA",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-6.jpg",
           "ilots": [
             {
               "numero": "42",
@@ -292,7 +292,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 7",
           "composition": "ilôts 39 à 41 - 58 - 109 à 111 - 113 à 114 - 115 Bis à 116",
           "couleur": "#7A6A1B",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-7.jpg",
           "ilots": [
             {
               "numero": "39",
@@ -345,7 +345,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 8",
           "composition": "ilôts 108 Bis - 115 - 118 à 122",
           "couleur": "#F39200",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-8.jpg",
           "ilots": [
             {
               "numero": "108 Bis",
@@ -382,7 +382,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 9",
           "composition": "ilôts 55 à 56 - 61 à 62 - 129 à 130",
           "couleur": "#E8B800",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-9.jpg",
           "ilots": [
             {
               "numero": "55",
@@ -415,7 +415,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 10",
           "composition": "ilôts 52 à 53 Bis - 137 à 143 - 492 Bis",
           "couleur": "#1B2C8B",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-10.jpg",
           "ilots": [
             {
               "numero": "52",
@@ -468,7 +468,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 11",
           "composition": "ilôts 54 - 63 - 134 à 136",
           "couleur": "#16A6A6",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-11.jpg",
           "ilots": [
             {
               "numero": "54",
@@ -497,7 +497,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 12",
           "composition": "ilôts 127 à 128 - 131 à 133",
           "couleur": "#D14F9E",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-12.jpg",
           "ilots": [
             {
               "numero": "127",
@@ -526,7 +526,7 @@ window.XUP_CADASTRE = {
           "libelle": "Zone 13",
           "composition": "ilôts 59 à 60 - 117 - 123 à 126",
           "couleur": "#5B1A8B",
-          "img": "assets/img/plans/anono-global.jpg",
+          "img": "assets/img/plans/anono-zones/zone-13.jpg",
           "ilots": [
             {
               "numero": "59",
@@ -567,7 +567,7 @@ window.XUP_CADASTRE = {
       "nb_ilots": null,
       "global_img": "assets/img/plans/akouai-global.jpg",
       "has_zones": false,
-      "note": "Plan unique. La légende du plan ne décrit que 3 zones (gabarit) — zonage réel à confirmer.",
+      "note": "Plan unique.",
       "zones": []
     }
   ]

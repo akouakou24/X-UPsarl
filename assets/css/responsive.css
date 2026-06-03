@@ -5,6 +5,8 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 img, svg, canvas { max-width: 100%; height: auto; }
+/* Exception : l'image du visualiseur de plan est gérée par transform (zoom/pan) */
+.viewer img { max-width: none !important; width: auto !important; height: auto !important; }
 
 /* Bouton menu mobile — caché sur grand écran */
 .xup-burger {
